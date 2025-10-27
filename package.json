@@ -1,6 +1,7 @@
 {
-    "name": "client",
+    "name": "flock-manager",
     "version": "1.0.0",
+    "description": "Flock Manager - UOSW membership tracking system",
     "private": true,
     "dependencies": {
         "react": "^18.3.1",
@@ -11,6 +12,12 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "dev": "cd server && npm run dev",
+        "server": "cd server && npm start",
+        "server:dev": "cd server && npm run dev",
+        "client": "npm start",
+        "install:server": "cd server && npm install",
+        "install:all": "npm install && npm run install:server"
     }
 }
