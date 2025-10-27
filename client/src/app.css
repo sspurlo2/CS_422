@@ -1,109 +1,171 @@
-/* Global styling */
+/* ---------- Global Styling ---------- */
 body {
-    font-family: "Poppins", sans-serif;
-    background-color: #29942A;
-    color: #222;
-    margin: 0;
-    padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #29942A;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  background-color: #29942A;
+  text-align: center;
+}
+
+.title {
+  color: #085408;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  color: #085408;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: darkgreen;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: seagreen;
+}
+
+.card {
+  background-color: #fff;
+  border: 2px dashed darkgreen;
+  border-radius: 10px;
+  padding: 2rem;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.grid {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+table th,
+table td {
+  border: 1px solid #2e7d32;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+table th {
+  background-color: #e8f5e9;
+}
+
+/* ---------- Dashboard Layout ---------- */
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr; /* sidebar + main content */
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #e8f5e9;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column; /* vertical stack */
+  gap: 0.5rem;
+  border-right: 2px solid darkgreen;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto; /* scroll if too long */
+}
+
+.sidebar h2 {
+  margin: 0 0 1rem 0;
+  color: darkgreen;
+  font-size: 1.5rem;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: darkgreen;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: block;
+}
+
+.sidebar a:hover {
+  background-color: #c8e6c9;
+}
+
+.sidebar button.btn {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Main content */
+.main-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  overflow-y: auto; /* scroll if content is too tall */
+}
+
+/* Dashboard cards */
+.dashboard-card {
+  background-color: #fff;
+  border: 2px dashed darkgreen;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Notifications list */
+.notifications,
+.point-people {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-left: 1rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr; /* stack sidebar above content */
   }
-  
-  /* Shared container */
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    min-height: 100vh;
-    background-color: #29942A; /* Green background */
-    text-align: center;
+
+  .sidebar {
+    height: auto;
+    border-right: none;
+    border-bottom: 2px solid darkgreen;
   }
-  
-  /* Titles */
-  .title {
-    color: #085408;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
-  
-  .subtitle {
-    color: #085408;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Navbar */
-  .navbar {
-    background-color: #e8f5e9;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  .navbar a {
-    text-decoration: none;
-    color: darkgreen;
-    font-weight: 600;
-  }
-  
-  .navbar a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Cards (profile, members, login box, etc.) */
-  .card {
-    background-color: #fff;
-    border: 2px dashed darkgreen;
-    border-radius: 10px;
-    padding: 2rem;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Home page grid layout */
-  .grid {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-  }
-  
-  /* Table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  
-  table th,
-  table td {
-    border: 1px solid #2e7d32;
-    padding: 0.5rem;
-    text-align: center;
-  }
-  
-  table th {
-    background-color: #e8f5e9;
-  }
-  
-  /* Buttons */
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: darkgreen;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .btn:hover {
-    background-color: seagreen;
-  }
-  
+}
