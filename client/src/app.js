@@ -9,14 +9,14 @@ import {
 } from "react-router-dom";
 import "./app.css";
 
-/* ---------- LOGIN PAGE ---------- */
+/* Login */
 function Login({ setIsLoggedIn }) {
   const navigate = useNavigate();
 
   function handleLogin() {
     // Simulate login
     localStorage.setItem("loggedIn", "true");
-    setIsLoggedIn(true); // update state
+    setIsLoggedIn(true);
     navigate("/dashboard");
   }
 
@@ -35,9 +35,10 @@ function Login({ setIsLoggedIn }) {
   );
 }
 
+/* Dashboard  */
 function Dashboard({ setIsLoggedIn }) {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false); // toggle sidebar
+  const [menuOpen, setMenuOpen] = useState(false);
 
   function handleLogout() {
     localStorage.removeItem("loggedIn");
@@ -47,34 +48,29 @@ function Dashboard({ setIsLoggedIn }) {
 
   return (
     <div className="dashboard">
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        {/* Toggle Button */}
-        <button
-          className="btn toggle-btn"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? "Close Menu" : "Menu"}
-        </button>
+      {/* Toggle button (stays outside sidebar) */}
+      <button
+        className={`menu-toggle ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? "✖" : "☰"}
+      </button>
 
-        {/* Sidebar content only shows when open */}
-        {sidebarOpen && (
-          <>
-            <h2>Flock Manager</h2>
-            <nav>
-              <Link to="/dashboard">Overview</Link>
-              <Link to="/dashboard/members">Members</Link>
-              <Link to="/dashboard/events">Events</Link>
-              <Link to="/dashboard/reports">Reports</Link>
-              <button className="btn" onClick={handleLogout}>
-                Log Out
-              </button>
-            </nav>
-          </>
-        )}
+      {/* Sidebar (slides in/out) */}
+      <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
+        <h2>Flock Manager</h2>
+        <nav>
+          <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Overview</Link>
+          <Link to="/dashboard/members" onClick={() => setMenuOpen(false)}>Members</Link>
+          <Link to="/dashboard/events" onClick={() => setMenuOpen(false)}>Events</Link>
+          <Link to="/dashboard/reports" onClick={() => setMenuOpen(false)}>Reports</Link>
+          <button className="btn" onClick={handleLogout}>
+            Log Out
+          </button>
+        </nav>
       </aside>
 
-      {/* Main Content */}
+      {/* Main content */}
       <main className="main-content">
         <h1 className="title">Dashboard Overview</h1>
         <p className="subtitle">Welcome back! Here’s what’s happening today.</p>
@@ -101,7 +97,8 @@ function Dashboard({ setIsLoggedIn }) {
 }
 
 
-/* ---------- APP / ROUTER ---------- */
+
+/* App*/
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true"
