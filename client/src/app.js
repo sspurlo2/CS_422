@@ -9,12 +9,11 @@ import {
 } from "react-router-dom";
 import "./app.css";
 
-/* Login */
+/* ---------- LOGIN PAGE ---------- */
 function Login({ setIsLoggedIn }) {
   const navigate = useNavigate();
 
   function handleLogin() {
-    // Simulate login
     localStorage.setItem("loggedIn", "true");
     setIsLoggedIn(true);
     navigate("/dashboard");
@@ -35,7 +34,7 @@ function Login({ setIsLoggedIn }) {
   );
 }
 
-/* Dashboard  */
+/* ---------- DASHBOARD PAGE ---------- */
 function Dashboard({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,25 +47,30 @@ function Dashboard({ setIsLoggedIn }) {
 
   return (
     <div className="dashboard">
-      {/* Toggle button (stays outside sidebar) */}
-      <button
-        className={`menu-toggle ${menuOpen ? "open" : ""}`}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        {menuOpen ? "✖" : "☰"}
-      </button>
+      {/* External toggle button for collapsed sidebar */}
+      {!menuOpen && (
+        <button
+          className="menu-toggle external"
+          onClick={() => setMenuOpen(true)}
+        >
+          ☰
+        </button>
+      )}
 
-      {/* Sidebar (slides in/out) */}
+      {/* Sidebar */}
       <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
-        <h2>Flock Manager</h2>
+        <div className="sidebar-header">
+          <h2>Flock Manager</h2>
+          <button className="menu-toggle" onClick={() => setMenuOpen(false)}>
+            ✖
+          </button>
+        </div>
         <nav>
           <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Overview</Link>
           <Link to="/dashboard/members" onClick={() => setMenuOpen(false)}>Members</Link>
           <Link to="/dashboard/events" onClick={() => setMenuOpen(false)}>Events</Link>
           <Link to="/dashboard/reports" onClick={() => setMenuOpen(false)}>Reports</Link>
-          <button className="btn" onClick={handleLogout}>
-            Log Out
-          </button>
+          <button className="btn" onClick={handleLogout}>Log Out</button>
         </nav>
       </aside>
 
@@ -96,15 +100,12 @@ function Dashboard({ setIsLoggedIn }) {
   );
 }
 
-
-
-/* App*/
+/* ---------- APP / ROUTER ---------- */
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true"
   );
 
-  // Optional: sync login state across tabs
   useEffect(() => {
     const handleStorage = () => {
       setIsLoggedIn(localStorage.getItem("loggedIn") === "true");
@@ -118,20 +119,12 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
-          }
+          element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
         />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/dashboard/*"
-          element={
-            isLoggedIn ? (
-              <Dashboard setIsLoggedIn={setIsLoggedIn} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isLoggedIn ? <Dashboard setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>
