@@ -1,4 +1,4 @@
-/* ---------- Global Styling ---------- */
+/* ---------- Global Styles ---------- */
 body {
   font-family: "Poppins", sans-serif;
   background-color: #29942A;
@@ -45,127 +45,123 @@ body {
   background-color: seagreen;
 }
 
+/* ---------- Cards / Grid ---------- */
 .card {
   background-color: #fff;
   border: 2px dashed darkgreen;
   border-radius: 10px;
   padding: 2rem;
-  width: 300px;
+  width: 250px; /* uniform width for better layout */
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .grid {
   display: flex;
-  gap: 2rem;
-  justify-content: center;
   flex-wrap: wrap;
-  margin-top: 1rem;
-}
-
-table {
+  justify-content: center; /* center horizontally */
+  gap: 2rem;
   width: 100%;
-  border-collapse: collapse;
+  max-width: 1200px; /* optional, keeps cards from stretching too far */
   margin-top: 1rem;
-}
-
-table th,
-table td {
-  border: 1px solid #2e7d32;
-  padding: 0.5rem;
-  text-align: center;
-}
-
-table th {
-  background-color: #e8f5e9;
 }
 
 /* ---------- Dashboard Layout ---------- */
 .dashboard {
-  display: grid;
-  grid-template-columns: 250px 1fr; /* sidebar + main content */
+  display: flex;
   min-height: 100vh;
-  overflow: hidden;
 }
 
-/* Sidebar */
+/* ---------- Sidebar ---------- */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* hidden by default */
+  width: 250px;
+  height: 100%;
   background-color: #e8f5e9;
   padding: 2rem 1rem;
+  border-right: 2px solid darkgreen;
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
   display: flex;
   flex-direction: column; /* vertical stack */
-  gap: 0.5rem;
-  border-right: 2px solid darkgreen;
-  height: 100vh;
-  box-sizing: border-box;
-  overflow-y: auto; /* scroll if too long */
+  gap: 1rem;
 }
 
-.sidebar h2 {
-  margin: 0 0 1rem 0;
-  color: darkgreen;
-  font-size: 1.5rem;
+/* Open state */
+.sidebar.open {
+  left: 0;
 }
 
-.sidebar nav {
+/* Sidebar header */
+.sidebar-header {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
+/* Menu items */
 .sidebar a {
-  text-decoration: none;
+  display: block; /* stack vertically */
+  padding: 0.5rem 0;
   color: darkgreen;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  display: block;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .sidebar a:hover {
-  background-color: #c8e6c9;
+  color: white;
+  background-color: darkgreen;
+  border-radius: 4px;
 }
 
-.sidebar button.btn {
-  margin-top: 1rem;
-  width: 100%;
-}
-
-/* Main content */
+/* ---------- Main Content ---------- */
 .main-content {
+  flex: 1;
+  margin-left: 0;
   padding: 2rem;
+  background-color: #29942A; /* keep green */
+  transition: margin-left 0.3s ease-in-out;
+
+  /* Center content vertically and horizontally */
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   gap: 2rem;
-  overflow-y: auto; /* scroll if content is too tall */
 }
 
-/* Dashboard cards */
-.dashboard-card {
-  background-color: #fff;
-  border: 2px dashed darkgreen;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.sidebar.open ~ .main-content {
+  margin-left: 250px; /* push content when sidebar open on large screens */
 }
 
-/* Notifications list */
-.notifications,
-.point-people {
-  max-height: 200px;
-  overflow-y: auto;
-  padding-left: 1rem;
+/* ---------- Menu toggle button ---------- */
+.menu-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1101;
+  background-color: darkgreen;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: all 0.3s ease;
 }
 
-/* Responsive tweaks */
+.menu-toggle:hover {
+  background-color: seagreen;
+}
+
+/* ---------- Responsive Sidebar ---------- */
 @media (max-width: 768px) {
-  .dashboard {
-    grid-template-columns: 1fr; /* stack sidebar above content */
-  }
-
-  .sidebar {
-    height: auto;
-    border-right: none;
-    border-bottom: 2px solid darkgreen;
+  .sidebar.open ~ .main-content {
+    margin-left: 0; /* overlay instead of pushing content */
   }
 }
