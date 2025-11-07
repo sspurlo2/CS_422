@@ -1,13 +1,11 @@
-// pages/Dashboard.js
+// src/pages/dashboard.js
 import React, { useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import Member from "./member"; // adjust the path if needed
-// import Events from "./events";
-// import Reports from "./reports";
+import Member from "./member";
 
 function Dashboard({ setIsLoggedIn }) {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // keep sidebar open by default
 
   function handleLogout() {
     localStorage.removeItem("loggedIn");
@@ -16,39 +14,34 @@ function Dashboard({ setIsLoggedIn }) {
   }
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-container">
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <button className="btn toggle-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
-          {sidebarOpen ? "Close Menu" : "Menu"}
-        </button>
+        <div className="sidebar-header">
+          <h2>Flock Manager</h2>
+          <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            {sidebarOpen ? "✖" : "☰"}
+          </button>
+        </div>
 
-        {sidebarOpen && (
-          <>
-            <h2>Flock Manager</h2>
-            <nav>
-              <Link to="/dashboard">Overview</Link>
-              <Link to="/dashboard/members">Members</Link>
-              <Link to="/dashboard/events">Events</Link>
-              <Link to="/dashboard/reports">Reports</Link>
-              <button className="btn" onClick={handleLogout}>
-                Log Out
-              </button>
-            </nav>
-          </>
-        )}
+        <nav className="sidebar-nav">
+          <Link to="/dashboard" className="nav-link">Overview</Link>
+          <Link to="/dashboard/members" className="nav-link">Members</Link>
+          <Link to="/dashboard/events" className="nav-link">Events</Link>
+          <Link to="/dashboard/reports" className="nav-link">Reports</Link>
+          <button className="btn logout-btn" onClick={handleLogout}>Log Out</button>
+        </nav>
       </aside>
 
       {/* Main Content */}
       <main className="main-content">
         <Routes>
           <Route
-            path="/"
+            index
             element={
               <>
                 <h1 className="title">Dashboard Overview</h1>
                 <p className="subtitle">Welcome back! Here’s what’s happening today.</p>
-
                 <div className="grid">
                   <div className="dashboard-card">
                     <h2>Member Updates</h2>
@@ -69,9 +62,6 @@ function Dashboard({ setIsLoggedIn }) {
             }
           />
           <Route path="members" element={<Member />} />
-          {/* Add other nested routes like events, reports here */}
-          {/* <Route path="events" element={<Events />} /> */}
-          {/* <Route path="reports" element={<Reports />} /> */}
         </Routes>
       </main>
     </div>
