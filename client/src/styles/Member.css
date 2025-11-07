@@ -1,13 +1,13 @@
 .member-container {
   padding: 40px 20px;
   font-family: 'Arial', sans-serif;
-  background: #f1f9f3;
+  background: #cacaca;
   min-height: 100vh;
 }
 
 .member-title {
   font-size: 2rem;
-  color: #00c853;
+  color: #B8241C;
   margin-bottom: 20px;
   font-weight: bold;
 }
@@ -24,7 +24,7 @@
 .member-filters select {
   padding: 8px 12px;
   border-radius: 6px;
-  border: 1px solid #c8e6c9;
+  border: 1px solid #fba5a1;
   font-size: 1rem;
 }
 
@@ -45,15 +45,15 @@
 }
 
 .member-table th {
-  background-color: #00c853;
+  background-color: #B8241C;
   color: white;
   font-weight: bold;
 }
 
 .member-table tr:nth-child(even) {
-  background-color: #f1f9f3;
+  background-color: #c2918e;
 }
 
 .member-table tr:hover {
-  background-color: #d0f0c0;
+  background-color: #e7615a;
 }
