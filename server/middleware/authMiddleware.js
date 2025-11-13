@@ -1,27 +1,76 @@
 const { Member } = require('../models');
+const crypto = require('crypto');
 
 class AuthMiddleware {
-  // Verify user is logged in (placeholder for future implementation)
+  // Verify user is logged in using JWT token
   static async authenticate(req, res, next) {
     try {
-      // TODO: Implement actual authentication when email auth is added
-      // For now, just pass through
+      // Get token from Authorization header
+      const authHeader = req.header('Authorization');
+      if (!authHeader) {
+        return res.status(401).json({
+          success: false,
+          message: 'Access denied. No token provided.'
+        });
+      }
+
+      // Extract token (format: "Bearer <token>")
+      const token = authHeader.replace('Bearer ', '');
+      if (!token) {
+        return res.status(401).json({
+          success: false,
+          message: 'Access denied. No token provided.'
+        });
+      }
+
+      // Verify session token using built-in crypto
+      const sessionSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+      const [encodedData, signature] = token.split('.');
       
-      // Example of what this would look like with JWT:
-      // const token = req.header('Authorization')?.replace('Bearer ', '');
-      // if (!token) {
-      //   return res.status(401).json({ success: false, message: 'Access denied. No token provided.' });
-      // }
-      // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // req.user = decoded;
+      if (!encodedData || !signature) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid token format'
+        });
+      }
+
+      // Verify signature
+      const hmac = crypto.createHmac('sha256', sessionSecret);
+      hmac.update(encodedData);
+      const expectedSignature = hmac.digest('hex');
       
-      req.user = { id: 1 }; // Placeholder user for development
+      if (signature !== expectedSignature) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid token'
+        });
+      }
+
+      // Decode and parse token data
+      const decodedData = Buffer.from(encodedData, 'base64').toString('utf-8');
+      const [id, email, name, expiresAt] = decodedData.split(':');
+      
+      // Check expiration
+      if (parseInt(expiresAt) < Date.now()) {
+        return res.status(401).json({
+          success: false,
+          message: 'Token expired'
+        });
+      }
+
+      // Attach user info to request
+      req.user = {
+        id: parseInt(id),
+        email: email,
+        name: name
+      };
+
       next();
     } catch (error) {
       console.error('Authentication error:', error);
       res.status(401).json({
         success: false,
-        message: 'Invalid token'
+        message: 'Authentication failed'
       });
     }
   }

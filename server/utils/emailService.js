@@ -328,6 +328,63 @@ class EmailService {
     }
   }
 
+  // Send magic link login email
+  static async sendMagicLinkEmail(email, name, magicLink) {
+    try {
+      const text = `
+        LOGIN LINK
+        ==========
+        
+        Dear ${name},
+        
+        You requested a login link for Flock Manager. Click the link below to access your account:
+        
+        ${magicLink}
+        
+        This link will expire in 15 minutes and can only be used once.
+        
+        If you did not request this login link, please ignore this email.
+        
+        Best regards,
+        UOSW Administration
+      `;
+
+      const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333; border-bottom: 2px solid #2196F3; padding-bottom: 10px;">
+            LOGIN LINK
+          </h2>
+          <p>Dear ${name},</p>
+          <p>You requested a login link for Flock Manager. Click the button below to access your account:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${magicLink}" style="background-color: #2196F3; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+              Login to Flock Manager
+            </a>
+          </div>
+          <p style="color: #666; font-size: 12px;">Or copy and paste this link into your browser:</p>
+          <p style="color: #666; font-size: 12px; word-break: break-all;">${magicLink}</p>
+          <p style="color: #999; font-size: 11px; margin-top: 30px;">
+            This link will expire in 15 minutes and can only be used once.
+          </p>
+          <p style="color: #999; font-size: 11px;">
+            If you did not request this login link, please ignore this email.
+          </p>
+          <p>Best regards,<br><strong>UOSW Administration</strong></p>
+        </div>
+      `;
+
+      return await this.sendEmail(
+        email,
+        'Your Flock Manager Login Link',
+        text,
+        html
+      );
+    } catch (error) {
+      console.error('Magic link email error:', error);
+      throw new Error('Failed to send magic link email');
+    }
+  }
+
   // Test email service
   static async testEmailService() {
     try {
