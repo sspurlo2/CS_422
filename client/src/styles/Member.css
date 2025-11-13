@@ -2,14 +2,14 @@
 .member-container {
   padding: 20px;
   font-family: 'Arial', sans-serif;
-  background: #f4f4f4; /* keep main version */
+  background: #f4f4f4; /* keep HEAD version */
   min-height: 100vh;
 }
 
 /* Title */
 .member-title {
   font-size: 2rem;
-  color: #B8241C; /* main commit color */
+  color: #B8241C; /* HEAD version color */
   font-weight: bold;
   margin-bottom: 20px;
 }
@@ -25,9 +25,9 @@
 .member-filters input,
 .member-filters select {
   padding: 8px 10px;
-  font-size: 1rem; /* from HEAD */
+  font-size: 1rem; /* HEAD */
   border-radius: 6px;
-  border: 1px solid #ccc; /* main */
+  border: 1px solid #ccc; /* HEAD */
 }
 
 /* Actions */
@@ -83,17 +83,17 @@
 }
 
 .member-table th {
-  background-color: #00c853; /* from HEAD */
+  background-color: #00c853; /* HEAD */
   color: white;
   font-weight: bold;
 }
 
 .member-table tr:nth-child(even) {
-  background-color: #f1f9f3; /* from HEAD */
+  background-color: #f1f9f3; /* HEAD */
 }
 
 .member-table tr:hover {
-  background-color: #d0f0c0; /* from HEAD */
+  background-color: #d0f0c0; /* HEAD */
 }
 
 /* 3-dot button */
