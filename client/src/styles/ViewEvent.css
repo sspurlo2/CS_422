@@ -1,0 +1,49 @@
+.view-event-container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background: #f4f4f4;
+    min-height: 100vh;
+  }
+  
+  .view-event-title {
+    font-size: 2rem;
+    color: #B8241C;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .event-details-card {
+    background: white;
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 6px solid #B8241C;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
+    font-size: 1.1rem;
+  }
+  
+  .event-details-card p {
+    margin: 10px 0;
+  }
+  
+  .back-btn {
+    margin-top: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #B8241C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .back-btn:hover {
+    background-color: #e7615a;
+  }
+  

@@ -1,0 +1,103 @@
+/* Page container */
+.events-container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background: #f4f4f4;
+    min-height: 100vh;
+}
+
+/* Section titles */
+.events-title {
+    font-size: 2rem;
+    color: #B8241C;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0 15px;
+}
+
+/* Responsive card layout — MATCHES DASHBOARD */
+.events-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+/* Event card styling */
+.event-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease;
+    border-left: 6px solid #B8241C;
+    width: 100%;
+    max-width: 350px;
+}
+
+.event-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Card title */
+.event-card h2 {
+    margin-top: 0;
+    color: #B8241C;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+/* Event info text */
+.event-card p {
+    margin: 6px 0;
+    font-size: 1rem;
+}
+
+/* Buttons */
+.create-event-btn {
+    background-color: #B8241C;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.create-event-btn:hover {
+    background-color: #e7615a;
+}
+
+/* Past event styling */
+.event-card.past {
+    opacity: 0.85;
+    border-left: 6px solid #777;
+}
+
+.event-btn.past {
+    background-color: #666;
+}
+
+.event-btn.past:hover {
+    background-color: #888;
+}
+
+/* Empty state */
+.empty-text {
+    text-align: center;
+    color: #444;
+    font-style: italic;
+}
+
+.events-container .main-content {
+    width: 100%;
+    display: block;
+  }
+  
+
