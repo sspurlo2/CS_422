@@ -83,17 +83,17 @@
 }
 
 .member-table th {
-  background-color: #00c853; /* HEAD */
+  background-color: #e7615a; /* HEAD */
   color: white;
   font-weight: bold;
 }
 
 .member-table tr:nth-child(even) {
-  background-color: #f1f9f3; /* HEAD */
+  background-color: #ffc7c4; /* HEAD */
 }
 
 .member-table tr:hover {
-  background-color: #d0f0c0; /* HEAD */
+  background-color: #ffada9; /* HEAD */
 }
 
 /* 3-dot button */

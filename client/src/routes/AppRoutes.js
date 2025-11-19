@@ -1,4 +1,3 @@
-// src/routes/AppRoutes.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/login";
@@ -10,17 +9,17 @@ import Reports from "../pages/reports";
 import NotFound from "../pages/notFound";
 
 export default function AppRoutes() {
-  const isLoggedIn = localStorage.getItem("loggedIn"); // simple auth check
+  const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/members" element={<Member />} />
-        <Route path="/reports" element={<Reports />} />
+        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
+        <Route path="/admin" element={isLoggedIn ? <AdminPanel /> : <Navigate to="/" />} />
+        <Route path="/events" element={isLoggedIn ? <Events /> : <Navigate to="/" />} />
+        <Route path="/members" element={isLoggedIn ? <Member /> : <Navigate to="/" />} />
+        <Route path="/reports" element={isLoggedIn ? <Reports /> : <Navigate to="/" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
