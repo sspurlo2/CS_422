@@ -1,0 +1,58 @@
+.create-event-container {
+    padding: 20px;
+    background: #f4f4f4;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .create-event-title {
+    text-align: center;
+    color: #B8241C;
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+  .create-event-form {
+    background: white;
+    padding: 25px;
+    max-width: 550px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border-left: 6px solid #B8241C;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .create-event-form label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .create-event-form input,
+  .create-event-form textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    font-size: 1rem;
+  }
+  
+  textarea {
+    min-height: 120px;
+  }
+  
+  .submit-btn {
+    padding: 12px;
+    background-color: #B8241C;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .submit-btn:hover {
+    background-color: #e7615a;
+  }
+  
