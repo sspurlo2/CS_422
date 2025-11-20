@@ -7,7 +7,9 @@ import ViewEvent from "./viewEvent";
 
 import Member from "./member";
 import Events from "./events";
-import UOSWLogo from "/Users/alexiacrawford/Desktop/school/CS/CS_422/client/src/Images/UOSW_Logo.png";
+import Reports from "./reports";
+import UOSWLogo from "../Images/UOSW_Logo.png";
+
 
 
 <Route path="events" element={<Events />} />
@@ -123,6 +125,7 @@ function Dashboard({ setIsLoggedIn }) {
       <Route path="events" element={<Events />} />
       <Route path="events/create" element={<CreateEvent />} />
       <Route path="events/:id" element={<ViewEvent />} />
+      <Route path="reports" element={<Reports />} />
 
 
       </Routes>
@@ -132,4 +135,3 @@ function Dashboard({ setIsLoggedIn }) {
 }
 
 export default Dashboard;
-
