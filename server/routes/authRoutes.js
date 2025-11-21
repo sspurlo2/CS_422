@@ -6,8 +6,8 @@ const AuthMiddleware = require('../middleware/authMiddleware');
 // POST /api/auth/request-login - Request magic link (send email)
 router.post('/request-login', AuthController.requestLogin);
 
-// GET /api/auth/verify - Verify magic link token
-router.get('/verify', AuthController.verifyToken);
+// POST /api/auth/verify - Verify Firebase ID token
+router.post('/verify', AuthController.verifyToken);
 
 // POST /api/auth/login (legacy - redirects to requestLogin)
 router.post('/login', AuthController.login);

@@ -1,8 +1,8 @@
 const { Member } = require('../models');
-const crypto = require('crypto');
+const admin = require('../config/firebase');
 
 class AuthMiddleware {
-  // Verify user is logged in using JWT token
+  // Verify user is logged in using Firebase ID token
   static async authenticate(req, res, next) {
     try {
       // Get token from Authorization header
@@ -15,59 +15,42 @@ class AuthMiddleware {
       }
 
       // Extract token (format: "Bearer <token>")
-      const token = authHeader.replace('Bearer ', '');
-      if (!token) {
+      const idToken = authHeader.replace('Bearer ', '');
+      if (!idToken) {
         return res.status(401).json({
           success: false,
           message: 'Access denied. No token provided.'
         });
       }
 
-      // Verify session token using built-in crypto
-      const sessionSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-      const [encodedData, signature] = token.split('.');
+      // Verify Firebase ID token
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
       
-      if (!encodedData || !signature) {
+      // Get member by email to attach full member info
+      const member = await Member.findByEmail(decodedToken.email);
+      if (!member) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid token format'
-        });
-      }
-
-      // Verify signature
-      const hmac = crypto.createHmac('sha256', sessionSecret);
-      hmac.update(encodedData);
-      const expectedSignature = hmac.digest('hex');
-      
-      if (signature !== expectedSignature) {
-        return res.status(401).json({
-          success: false,
-          message: 'Invalid token'
-        });
-      }
-
-      // Decode and parse token data
-      const decodedData = Buffer.from(encodedData, 'base64').toString('utf-8');
-      const [id, email, name, expiresAt] = decodedData.split(':');
-      
-      // Check expiration
-      if (parseInt(expiresAt) < Date.now()) {
-        return res.status(401).json({
-          success: false,
-          message: 'Token expired'
+          message: 'Member not found'
         });
       }
 
       // Attach user info to request
       req.user = {
-        id: parseInt(id),
-        email: email,
-        name: name
+        id: member.id,
+        email: member.email,
+        name: member.name
       };
 
       next();
     } catch (error) {
       console.error('Authentication error:', error);
+      if (error.code === 'auth/id-token-expired' || error.code === 'auth/argument-error') {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid or expired token'
+        });
+      }
       res.status(401).json({
         success: false,
         message: 'Authentication failed'

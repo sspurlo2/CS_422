@@ -1,9 +1,9 @@
-const { Member, LoginToken } = require('../models');
-const crypto = require('crypto');
+const { Member } = require('../models');
+const admin = require('../config/firebase');
 const EmailService = require('../utils/emailService');
 
 class AuthController {
-  // Request magic link login (send email with link)
+  // Request magic link login (send email with link using Firebase)
   static async requestLogin(req, res) {
     try {
       const { email } = req.body;
@@ -26,22 +26,22 @@ class AuthController {
         });
       }
 
-      // Delete any existing tokens for this email (prevent token spam)
-      await LoginToken.deleteByEmail(email);
-
-      // Create new login token (expires in 15 minutes)
-      const loginToken = await LoginToken.create(email, 15);
-
-      // Generate magic link URL
+      // Generate Firebase email link
       const baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-      const magicLink = `${baseUrl}/verify?token=${loginToken.token}`;
+      const actionCodeSettings = {
+        url: `${baseUrl}/verify`,
+        handleCodeInApp: false, // Set to true if using mobile app
+      };
+
+      // Generate the sign-in link using Firebase
+      const magicLink = await admin.auth().generateSignInWithEmailLink(email, actionCodeSettings);
 
       // Send magic link email (non-blocking - log error but don't fail request)
       try {
         await EmailService.sendMagicLinkEmail(email, member.name, magicLink);
       } catch (emailError) {
         console.error('Failed to send magic link email:', emailError);
-        // Continue even if email fails - token is still created and valid
+        // Continue even if email fails - link is still generated and valid
         // User can request another link if needed
       }
 
@@ -58,29 +58,31 @@ class AuthController {
     }
   }
 
-  // Verify magic link token and log user in
+  // Verify Firebase ID token and log user in
   static async verifyToken(req, res) {
     try {
-      const { token } = req.query;
+      const { idToken } = req.body;
 
-      if (!token) {
+      if (!idToken) {
         return res.status(400).json({
           success: false,
-          message: 'Token is required'
+          message: 'ID token is required'
         });
       }
 
-      // Find and mark token as used in a single atomic operation (more efficient)
-      const loginToken = await LoginToken.findAndMarkAsUsed(token);
-      if (!loginToken) {
+      // Verify the Firebase ID token
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const email = decodedToken.email;
+
+      if (!email) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid or expired token'
+          message: 'Invalid token: email not found'
         });
       }
 
       // Get member by email
-      const member = await Member.findByEmail(loginToken.email);
+      const member = await Member.findByEmail(email);
       if (!member) {
         return res.status(401).json({
           success: false,
@@ -88,19 +90,13 @@ class AuthController {
         });
       }
 
-      // Generate session token using built-in crypto (no external dependency needed)
-      const sessionSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-      const sessionData = `${member.id}:${member.email}:${member.name}:${Date.now() + 7 * 24 * 60 * 60 * 1000}`;
-      const hmac = crypto.createHmac('sha256', sessionSecret);
-      hmac.update(sessionData);
-      const signature = hmac.digest('hex');
-      const sessionToken = Buffer.from(sessionData).toString('base64') + '.' + signature;
-
+      // Return the Firebase ID token as the session token
+      // Frontend can use this token for subsequent requests
       res.json({
         success: true,
         message: 'Login successful',
         data: {
-          token: sessionToken,
+          token: idToken,
           member: {
             id: member.id,
             name: member.name,
@@ -112,6 +108,12 @@ class AuthController {
       });
     } catch (error) {
       console.error('Verify token error:', error);
+      if (error.code === 'auth/id-token-expired' || error.code === 'auth/argument-error') {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid or expired token'
+        });
+      }
       res.status(500).json({
         success: false,
         message: 'Internal server error'
