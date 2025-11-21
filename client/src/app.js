@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./app.css";
 import Login from "./pages/login";
-import Dashboard from "./pages/dashboard"; // use your real Dashboard
+import Dashboard from "./pages/dashboard"; // Dashboard already handles sub-routes
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -26,13 +21,18 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Redirect root based on login */}
         <Route
           path="/"
           element={
             isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
           }
         />
+
+        {/* Login page */}
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+
+        {/* Dashboard and all its sub-routes (members, events, reports, etc.) */}
         <Route
           path="/dashboard/*"
           element={
